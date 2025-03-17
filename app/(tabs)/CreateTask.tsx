@@ -157,9 +157,9 @@ if(!storedToken) return;
         </Animated.View>
     );
 
-    useEffect(() => {
-        console.log('Tasks:', tasks);
-    }, [tasks]);
+    // useEffect(() => {
+    //     // console.log('Tasks:', tasks);
+    // }, [tasks]);
 
     return (
         <View style={styles.container}>
