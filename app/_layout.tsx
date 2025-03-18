@@ -10,7 +10,6 @@ export default function RootLayout() {
     <Stack >
         <Stack.Screen name="AuthScreen" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="Dashboard" />
   </Stack>
   </PersistGate>
  </Provider>
