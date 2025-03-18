@@ -12,6 +12,9 @@ const handleRedirections =async()=>{
 if(storedToken){
   router.navigate("/(tabs)/Home")
 
+}else{
+  router.navigate("/AuthScreen")
+
 }
 
 }
@@ -19,21 +22,11 @@ useEffect(()=>{
   handleRedirections()
 },[])
 
+
+
   return (
 
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {/* <Text style={{fontSize:18,color:"#000"}}>Task Management App --Task</Text> */}
-      <TouchableOpacity onPress={() => router.push('/AuthScreen')} style={{backgroundColor:"green",paddingHorizontal:10}}>
-        
-  <Text>Go to Tabs</Text>
-</TouchableOpacity>
-        </View>
+<></>
 
   );
 }

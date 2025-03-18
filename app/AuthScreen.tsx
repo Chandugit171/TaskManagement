@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -11,6 +11,7 @@ export default function AuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const toggleAuthMode = () => setIsSignUp(!isSignUp);
 
@@ -20,6 +21,7 @@ export default function AuthScreen() {
             return;
         }
 
+        setLoading(true); // Start loading
         try {
             const endpoint = isSignUp 
                 ? 'https://authmodule-ifyk.onrender.com/api/register'
@@ -34,11 +36,13 @@ export default function AuthScreen() {
             Alert.alert('Success', isSignUp ? 'Account created successfully!' : 'Logged in successfully!');
             router.replace('/(tabs)/Home');
         } catch (error) {
-            console.log("error",error);
-            
+            console.log("error", error);
             Alert.alert('Error', error.response?.data?.message || 'Something went wrong!');
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{isSignUp ? 'Sign Up' : 'Login'}</Text>
@@ -90,8 +94,16 @@ export default function AuthScreen() {
                 </View>
             )}
 
-            <TouchableOpacity style={styles.button} onPress={handleAuth}>
-                <Text style={styles.buttonText}>{isSignUp ? 'Sign Up' : 'Login'}</Text>
+            <TouchableOpacity 
+                style={[styles.button, loading && styles.disabledButton]} 
+                onPress={handleAuth}
+                disabled={loading}
+            >
+                {loading ? (
+                    <ActivityIndicator color="#fff" />
+                ) : (
+                    <Text style={styles.buttonText}>{isSignUp ? 'Sign Up' : 'Login'}</Text>
+                )}
             </TouchableOpacity>
 
             <TouchableOpacity onPress={toggleAuthMode}>
@@ -112,4 +124,5 @@ const styles = StyleSheet.create({
     button: { backgroundColor: '#6200EE', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 25, width: '100%', alignItems: 'center', marginTop: 20 },
     buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
     switchText: { color: '#6200EE', marginTop: 15, fontWeight: '600' },
+    disabledButton: { backgroundColor: '#9E9E9E' },
 });
